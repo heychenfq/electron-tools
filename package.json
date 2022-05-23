@@ -1,0 +1,35 @@
+{
+  "name": "electron-toolkit",
+  "version": "1.0.0",
+  "description": "electron toolkit",
+  "private": true,
+  "scripts": {
+    "prettier:check": "prettier --check .",
+    "prettier:fix": "prettier --write .",
+    "eslint:check": "eslint **/*.ts",
+    "eslint:fix": "eslint **/*.ts --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heychenfq/electron-toolkit.git"
+  },
+  "keywords": [
+    "electron",
+    "toolkit",
+    "ioc",
+    "ipc"
+  ],
+  "author": "heychenfq <heychenfq@foxmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/heychenfq/electron-toolkit/issues"
+  },
+  "homepage": "https://github.com/heychenfq/electron-toolkit#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "eslint": "^8.16.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.6.4"
+  }
+}
