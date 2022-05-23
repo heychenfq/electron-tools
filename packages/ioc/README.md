@@ -3,6 +3,17 @@
 
 A simple DI implement of IOC using typescript. inspired by vscode IOC implement.
 
+# Installation
+
+```bash
+# install by npm
+$npm install ioc
+# install by pnpm
+$pnpm add ioc
+# install by yarn
+$yarn add ioc
+```
+
 # Usage
 
 1. enable `experimentalDecorators` option in your tsconfig.json.
@@ -60,7 +71,7 @@ const ioc = new IOC();
 ioc.init(); // this statement will instance all services registered.
 ```
 
-2. cycle reference.
+2. Cycle reference.
 if there are some cycle reference between your services. such as serviceA dependencied by serviceB, serviceB also dependencied by serviceA, you can resolve this issue by get service later instead of constructor of service.
 
 ``` typescript
