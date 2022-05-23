@@ -1,5 +1,5 @@
 {
-  "name": "ioc",
+  "name": "@electron-toolkit/ioc",
   "version": "1.0.0",
   "description": "DI implement of IOC",
   "main": "dist/index.js",
