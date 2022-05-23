@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "DI implement of IOC",
   "main": "dist/index.js",
+  "files": ["dist"],
   "scripts": {
     "dev": "tsc --watch --project tsconfig.json",
     "build": "tsc --project tsconfig.json",
