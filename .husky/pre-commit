@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+pnpm --filter "./packages/**" test
+pnpm prettier:fix
+pnpm eslint:fix
+git add .
