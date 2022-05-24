@@ -4,7 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 
 export class Node<T> {
-
   readonly data: T;
   readonly incoming = new Map<string, Node<T>>();
   readonly outgoing = new Map<string, Node<T>>();
@@ -15,7 +14,6 @@ export class Node<T> {
 }
 
 export default class Graph<T> {
-
   private readonly _nodes = new Map<string, Node<T>>();
 
   constructor(private readonly _hashFn: (element: T) => string) {
@@ -72,16 +70,19 @@ export default class Graph<T> {
   toString(): string {
     const data: string[] = [];
     for (const [key, value] of this._nodes) {
-      data.push(`${key}, (incoming)[${[...value.incoming.keys()].join(', ')}], (outgoing)[${[...value.outgoing.keys()].join(',')}]`);
-
+      data.push(
+        `${key}, (incoming)[${[...value.incoming.keys()].join(', ')}], (outgoing)[${[...value.outgoing.keys()].join(
+          ',',
+        )}]`,
+      );
     }
     return data.join('\n');
   }
 
   /**
-	 * This is brute force and slow and **only** be used
-	 * to trouble shoot.
-	 */
+   * This is brute force and slow and **only** be used
+   * to trouble shoot.
+   */
   findCycleSlow() {
     for (const [id, node] of this._nodes) {
       const seen = new Set<string>([id]);

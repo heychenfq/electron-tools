@@ -1,4 +1,3 @@
-
 # Introduction
 
 A simple DI implement of IOC using typescript. inspired by vscode IOC implement.
@@ -41,7 +40,7 @@ class ServiceB {
   constructor(
     @inject('serviceA') // inject serviceA to serviceB, the only args passed to inject is the service unique id.
     readonly serviceA: ServiceA,
-  )
+  ) {}
 }
 ```
 
@@ -64,7 +63,7 @@ console.log(serviceA === serviceB.a); // true
 # Features
 
 1. Instance all service in one place.  
-by default. service only be instanced when needed. in the case above. if you only call `ioc.getService('serviceA')`, serviceB will not be instance, cause serviceB is not dependencied by any service, but if you only call `ioc.getService('serviceB')`, serviceA will be instance, and inject into serviceB. this maybe not what you want. you can init all services in one place by call `ioc.init()`.
+   by default. service only be instanced when needed. in the case above. if you only call `ioc.getService('serviceA')`, serviceB will not be instance, cause serviceB is not dependencied by any service, but if you only call `ioc.getService('serviceB')`, serviceA will be instance, and inject into serviceB. this maybe not what you want. you can init all services in one place by call `ioc.init()`.
 
 ```typescript
 const ioc = new IOC();
@@ -72,9 +71,9 @@ ioc.init(); // this statement will instance all services registered.
 ```
 
 2. Cycle reference.
-if there are some cycle reference between your services. such as serviceA dependencied by serviceB, serviceB also dependencied by serviceA, you can resolve this issue by get service later instead of constructor of service.
+   if there are some cycle reference between your services. such as serviceA dependencied by serviceB, serviceB also dependencied by serviceA, you can resolve this issue by get service later instead of constructor of service.
 
-``` typescript
+```typescript
 // src/serviceA.ts
 import IOC, { service, inject } from '@electron-toolkit/ioc';
 
@@ -82,7 +81,7 @@ import IOC, { service, inject } from '@electron-toolkit/ioc';
 class ServiceA {
   constructor(
     @inject('instantiationService') readonly ioc: IOC, // ioc itself is also a service can be injected.
-  )
+  ) {}
 
   someMethod() {
     // dynamic get serviceB by ioc#getService API. then you can do anything what serviceB can do.

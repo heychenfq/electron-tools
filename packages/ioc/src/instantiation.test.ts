@@ -1,16 +1,13 @@
 import InstantiationService, { service, inject } from './instantiation';
 
 @service('a')
-class ServiceA {
-}
+class ServiceA {}
 @service('b')
 class ServiceB {
   constructor(
     @inject('a')
     readonly a: ServiceA,
-  ) {
-
-  }
+  ) {}
 }
 @service('c')
 class ServiceC {
@@ -19,9 +16,7 @@ class ServiceC {
     readonly a: ServiceA,
     @inject('b')
     readonly b: ServiceB,
-  ) {
-
-  }
+  ) {}
 }
 
 it('service should auto inject', () => {

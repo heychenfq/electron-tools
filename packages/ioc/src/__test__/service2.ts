@@ -1,4 +1,3 @@
-
 import { service, inject } from '../instantiation';
 import Service1 from './service1';
 

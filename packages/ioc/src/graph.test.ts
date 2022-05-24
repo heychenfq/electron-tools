@@ -1,4 +1,3 @@
-
 import Graph from './graph';
 
 interface Data {
