@@ -6,11 +6,11 @@ A simple DI implement of IOC using typescript. inspired by vscode IOC implement.
 
 ```bash
 # install by npm
-$npm install @electron-toolkit/ioc
+$npm install @electron-tools/ioc
 # install by pnpm
-$pnpm add @electron-toolkit/ioc
+$pnpm add @electron-tools/ioc
 # install by yarn
-$yarn add @electron-toolkit/ioc
+$yarn add @electron-tools/ioc
 ```
 
 # Usage
@@ -21,7 +21,7 @@ $yarn add @electron-toolkit/ioc
 
 ```typescript
 // src/serviceA.ts
-import { service } from '@electron-toolkit/ioc';
+import { service } from '@electron-tools/ioc';
 
 @service('serviceA') // register ServiceA with unique id 'serviceA' using service decorator exported by this package.
 class ServiceA {
@@ -33,7 +33,7 @@ class ServiceA {
 
 ```typescript
 // src/serviceB.ts
-import { service, inject } from '@electron-toolkit/ioc';
+import { service, inject } from '@electron-tools/ioc';
 
 @service('serviceB') // also register ServiceB with unique id 'serviceB'
 class ServiceB {
@@ -48,7 +48,7 @@ class ServiceB {
 
 ```typescript
 // src/index.ts
-import IOC from '@electron-toolkit/ioc';
+import IOC from '@electron-tools/ioc';
 import './serviceA.ts';
 import './serviceB.ts';
 
@@ -75,7 +75,7 @@ ioc.init(); // this statement will instance all services registered.
 
 ```typescript
 // src/serviceA.ts
-import IOC, { service, inject } from '@electron-toolkit/ioc';
+import IOC, { service, inject } from '@electron-tools/ioc';
 
 @service('serviceA') // register ServiceA with unique id 'serviceA' using service decorator exported by ioc.
 class ServiceA {
