@@ -4,14 +4,14 @@ A simple DI implement of IOC using typescript. inspired by vscode IOC implement.
 
 # Installation
 
-```bash
+````bash
 # install by npm
 $npm install @electron-tools/ioc
 # install by pnpm
 $pnpm add @electron-tools/ioc
 # install by yarn
 $yarn add @electron-tools/ioc
-```
+```~
 
 # Usage
 
@@ -27,7 +27,7 @@ import { service } from '@electron-tools/ioc';
 class ServiceA {
   // ....
 }
-```
+````
 
 3. use `inject` decorator inject your service to another service.
 
