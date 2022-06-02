@@ -5,7 +5,7 @@ type ServiceUniqueId = string | Symbol;
 
 const serviceCtorStore = new Map<ServiceUniqueId, ServiceCtor>();
 
-export const InstantiationServiceID = Symbol.for('instantiationService');
+export const INSTANTIATION_SERVICE_ID = Symbol.for('instantiationService');
 
 export default class InstantiationService {
   #serviceStore = new Map<ServiceUniqueId, unknown>();
@@ -15,7 +15,7 @@ export default class InstantiationService {
   }
 
   constructor() {
-    this.#serviceStore.set(InstantiationServiceID, this);
+    this.#serviceStore.set(INSTANTIATION_SERVICE_ID, this);
   }
 
   init() {
