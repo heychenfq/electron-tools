@@ -56,7 +56,7 @@ const ioc = new IOC();
 const serviceA = ioc.getService('serviceA');
 const serviceB = ioc.getService('serviceB');
 console.log(serviceA instanceof ServiceA); // true
-console.log(serviceB instanceof ServiceA); // true
+console.log(serviceB instanceof ServiceB); // true
 console.log(serviceA === serviceB.a); // true
 ```
 

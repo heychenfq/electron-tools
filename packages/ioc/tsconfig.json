@@ -4,6 +4,6 @@
   "exclude": ["src/**/*.test.ts", "src/__test__/**/*.ts"],
   "compilerOptions": {
     "rootDir": "./src",                                  
-    "outDir": "./dist", 
+    "outDir": "./dist",
   }
 }

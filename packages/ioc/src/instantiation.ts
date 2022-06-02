@@ -1,17 +1,21 @@
 import 'reflect-metadata';
 import Graph from './graph';
 
-const serviceCtorStore = new Map<string, ServiceCtor>();
+type ServiceUniqueId = string | Symbol;
+
+const serviceCtorStore = new Map<ServiceUniqueId, ServiceCtor>();
+
+export const InstantiationServiceID = Symbol.for('instantiationService');
 
 export default class InstantiationService {
-  #serviceStore = new Map<string, unknown>();
+  #serviceStore = new Map<ServiceUniqueId, unknown>();
 
   get services() {
     return this.#serviceStore;
   }
 
   constructor() {
-    this.#serviceStore.set('instantiationService', this);
+    this.#serviceStore.set(InstantiationServiceID, this);
   }
 
   init() {
@@ -20,18 +24,18 @@ export default class InstantiationService {
     }
   }
 
-  getService<T = any>(id: string): T {
+  getService<S = any>(id: ServiceUniqueId): S {
     // has created, return exist service
-    if (this.#serviceStore.has(id)) return this.#serviceStore.get(id) as T;
-    return this.#createAndCacheService(id);
+    if (this.#serviceStore.has(id)) return this.#serviceStore.get(id) as S;
+    return this.#createAndCacheService<S>(id);
   }
 
-  #createAndCacheService<T = any>(serviceId: string): T {
+  #createAndCacheService<S = any>(serviceId: ServiceUniqueId): S {
     const ServiceCtor = this.#getServiceCtorById(serviceId);
     if (!ServiceCtor) throw new Error(`[InstantiationService] service ${serviceId} not found!`);
 
     // build graph
-    const graph = new Graph<{ serviceId: string; ctor: ServiceCtor }>((node) => node.serviceId);
+    const graph = new Graph<{ serviceId: ServiceUniqueId; ctor: ServiceCtor }>((node) => node.serviceId.toString());
     const stack = [{ ctor: ServiceCtor, serviceId }];
     while (stack.length) {
       const node = stack.pop()!;
@@ -74,7 +78,7 @@ export default class InstantiationService {
     return Reflect.getOwnMetadata(dependencyMetadataKey, Ctor);
   }
 
-  #getServiceCtorById(id: string): ServiceCtor {
+  #getServiceCtorById(id: ServiceUniqueId): ServiceCtor {
     if (!serviceCtorStore.has(id)) {
       throw new Error(`service ${id} not found!`);
     }
@@ -101,7 +105,7 @@ class CyclicDependencyError extends Error {
 
 const dependencyMetadataKey = Symbol.for('$di$dependency');
 
-export function service(id?: string) {
+export function service(id?: ServiceUniqueId) {
   return (Ctor: ServiceCtor) => {
     const serviceId = id || Ctor.name.slice(0, 1).toLowerCase().concat(Ctor.name.slice(1));
     if (serviceCtorStore.has(serviceId)) throw new Error(`service ${serviceId} already exist, do not register again`);
@@ -109,7 +113,7 @@ export function service(id?: string) {
   };
 }
 
-export function inject(id: string) {
+export function inject(id: ServiceUniqueId) {
   return (Ctor: ServiceCtor, parameterKey: string, parameterIndex: number) => {
     if (Reflect.hasOwnMetadata(dependencyMetadataKey, Ctor)) {
       const dependencies = Reflect.getOwnMetadata(dependencyMetadataKey, Ctor);
