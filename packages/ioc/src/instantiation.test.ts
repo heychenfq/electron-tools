@@ -1,4 +1,4 @@
-import InstantiationService, { service, inject } from './instantiation';
+import InstantiationService, { service, inject, register } from './instantiation';
 
 @service('a')
 class ServiceA {}
@@ -46,4 +46,24 @@ it('cycle reference should throw error', async () => {
   await import('./__test__/service3');
   const ioc = new InstantiationService();
   expect(ioc.init).toThrow();
+});
+
+it('manual register service', async () => {
+  class ServiceD {}
+
+  class ServiceE {
+    constructor(
+      @inject('d')
+      readonly d: ServiceD,
+    ) {}
+  }
+
+  register('e', ServiceE);
+
+  const ioc = new InstantiationService();
+  const serviceD = new ServiceD();
+  ioc.registerService('d', serviceD);
+  const serviceE = ioc.getService<ServiceE>('e');
+  expect(serviceE instanceof ServiceE).toBe(true);
+  expect(serviceE.d).toBe(serviceD);
 });

@@ -24,6 +24,10 @@ export default class InstantiationService {
     }
   }
 
+  registerService(id: ServiceUniqueId, service: any): void {
+    this.#serviceStore.set(id, service);
+  }
+
   getService<S = any>(id: ServiceUniqueId): S {
     // has created, return exist service
     if (this.#serviceStore.has(id)) return this.#serviceStore.get(id) as S;
@@ -104,6 +108,11 @@ class CyclicDependencyError extends Error {
 }
 
 const dependencyMetadataKey = Symbol.for('$di$dependency');
+
+export function register(id: ServiceUniqueId, Ctor: ServiceCtor) {
+  if (serviceCtorStore.has(id)) throw new Error(`service ${id} already exist, do not register again`);
+  serviceCtorStore.set(id, Ctor);
+}
 
 export function service(id?: ServiceUniqueId) {
   return (Ctor: ServiceCtor) => {
