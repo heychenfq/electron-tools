@@ -1,0 +1,25 @@
+{
+  "name": "@electron-tools/ipc",
+  "version": "1.0.0",
+  "description": "electron ipc toolkit",
+  "keywords": [
+    "electron",
+    "ipc"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.5.5",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.4"
+  },
+  "author": "heychenfq <heychenfq@foxmail.com>",
+  "license": "MIT"
+}
