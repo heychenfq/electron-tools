@@ -1,10 +1,10 @@
 {
   "extends": "../../tsconfig.json",
 	"include": ["src/**/*"],
-  "exclude": ["src/**/*.test.ts", "src/__test__/**/*.ts"],
   "compilerOptions": {
     "rootDir": "./src",                                  
     "outDir": "./dist",
-    "declarationDir": "./dist/types"
-  },
+    "module": "commonjs",
+    "resolveJsonModule": true,
+  }
 }
