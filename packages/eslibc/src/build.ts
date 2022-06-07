@@ -1,9 +1,9 @@
 import path from 'path';
 import esbuild from 'esbuild';
-import { LibBuilderOptions, LibBuilderContext, normalizeOptionsAndContext, logger } from './utils';
+import { EsLibcOptions, EsLibcContext, normalizeOptionsAndContext, logger } from './utils';
 import { dts } from './dts';
 
-export async function build(_options?: LibBuilderOptions, _ctx?: LibBuilderContext) {
+export async function build(_options?: EsLibcOptions, _ctx?: EsLibcContext) {
   const [options, ctx] = normalizeOptionsAndContext(_options, _ctx);
   logger.info(`${ctx.packageInfo.name} --> Start to build project.`);
   await Promise.all(

@@ -1,17 +1,10 @@
 import path from 'path';
 import fs from 'fs';
 import { Extractor, ExtractorConfig, ExtractorResult } from '@microsoft/api-extractor';
-import {
-  CustomizePromise,
-  normalizeOptionsAndContext,
-  LibBuilderContext,
-  LibBuilderOptions,
-  logger,
-  isWindows,
-} from './utils';
+import { CustomizePromise, normalizeOptionsAndContext, EsLibcContext, EsLibcOptions, logger, isWindows } from './utils';
 import { spawn } from 'child_process';
 
-export async function dts(options?: LibBuilderOptions, ctx?: LibBuilderContext): Promise<void> {
+export async function dts(options?: EsLibcOptions, ctx?: EsLibcContext): Promise<void> {
   const [finalOptions, finalCtx] = normalizeOptionsAndContext(options, ctx);
   logger.info(`${finalCtx.packageInfo.name} --> Start to bundle declaration file.`);
   try {
@@ -23,9 +16,9 @@ export async function dts(options?: LibBuilderOptions, ctx?: LibBuilderContext):
   }
 }
 
-async function generateDts(options: Required<LibBuilderOptions>, ctx: Required<LibBuilderContext>): Promise<void> {
+async function generateDts(options: Required<EsLibcOptions>, ctx: Required<EsLibcContext>): Promise<void> {
   // compile with tsc first to generate .d.ts file
-  const tmpDir = path.resolve(ctx.projectRoot, '.libbuilder');
+  const tmpDir = path.resolve(ctx.projectRoot, '.eslibc');
   const tscProcess = spawn(
     path.resolve(__dirname, isWindows() ? '../node_modules/.bin/tsc.cmd' : '../node_modules/.bin/tsc'),
     [
@@ -53,8 +46,8 @@ async function generateDts(options: Required<LibBuilderOptions>, ctx: Required<L
   return tscPromise.promise;
 }
 
-async function rollupDts(options: Required<LibBuilderOptions>, ctx: Required<LibBuilderContext>): Promise<void> {
-  const tmpDir = path.resolve(ctx.projectRoot, '.libbuilder');
+async function rollupDts(options: Required<EsLibcOptions>, ctx: Required<EsLibcContext>): Promise<void> {
+  const tmpDir = path.resolve(ctx.projectRoot, '.eslibc');
   const tsRootDir = path.resolve(ctx.projectRoot, ctx.tsCompilerOptions.rootDir || '.');
   const absEntryPath = path.resolve(ctx.projectRoot, options.entry);
   const sourceEntryRelativePath = path.relative(tsRootDir, absEntryPath).replace(/\.tsx?$/, '.d.ts');

@@ -1,11 +1,11 @@
 {
-  "name": "@electron-tools/libbuilder",
-  "version": "0.0.0",
+  "name": "eslibc",
+  "version": "0.0.2",
   "description": "build library written with javascript or typescript.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "libbuilder": "dist/cli.js"
+    "eslibc": "dist/cli.js"
   },
   "files": [
     "dist",

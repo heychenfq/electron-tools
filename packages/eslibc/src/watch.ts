@@ -1,15 +1,9 @@
 import path from 'path';
 import esbuild from 'esbuild';
-import {
-  getOutputFromContext,
-  LibBuilderContext,
-  LibBuilderOptions,
-  logger,
-  normalizeOptionsAndContext,
-} from './utils';
+import { getOutputFromContext, EsLibcContext, EsLibcOptions, logger, normalizeOptionsAndContext } from './utils';
 import { dts } from './dts';
 
-export async function watch(_options?: LibBuilderOptions, _ctx?: LibBuilderContext) {
+export async function watch(_options?: EsLibcOptions, _ctx?: EsLibcContext) {
   const [options, ctx] = normalizeOptionsAndContext(_options, _ctx);
   logger.info(`${ctx.packageInfo.name} --> Start to build project in watching mode.`);
   const results = await Promise.all(
@@ -17,12 +11,12 @@ export async function watch(_options?: LibBuilderOptions, _ctx?: LibBuilderConte
       const isLatest = index === options.formats.length - 1;
       return esbuild
         .build({
-          absWorkingDir: ctx.projectRoot,
           bundle: true,
           write: true,
           format,
-          outdir: path.resolve(getOutputFromContext(ctx), format),
-          sourcemap: !!ctx.tsCompilerOptions.sourceMap,
+          entryPoints: [options.entry],
+          ...options.esbuild,
+          outdir: path.resolve(options.esbuild.outdir!, options.formats.length === 1 ? '' : format),
           watch: {
             onRebuild(error, result) {
               if (error) {

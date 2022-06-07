@@ -5,7 +5,7 @@ import { CompilerOptions, findConfigFile, getDefaultCompilerOptions, sys } from 
 import colors from 'colors';
 import { BuildOptions } from 'esbuild';
 
-export interface LibBuilderOptions {
+export interface EsLibcOptions {
   entry?: string;
   formats?: Array<'cjs' | 'esm' | 'iife'>;
   esbuild?: Omit<BuildOptions, 'entryPoints' | 'entryNames'>;
@@ -14,12 +14,12 @@ export interface LibBuilderOptions {
 interface PackageInfo {
   name: string;
   version: string;
-  libbuilder?: LibBuilderOptions;
+  eslibc?: EsLibcOptions;
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
 }
 
-export interface LibBuilderContext {
+export interface EsLibcContext {
   cwd?: string;
   projectRoot?: string;
   packageInfo?: PackageInfo;
@@ -35,20 +35,20 @@ const findTsConfigFile = (dir: string) => {
 };
 
 export function normalizeOptionsAndContext(
-  options?: LibBuilderOptions,
-  ctx?: LibBuilderContext,
-): [Required<LibBuilderOptions>, Required<LibBuilderContext>] {
+  options?: EsLibcOptions,
+  ctx?: EsLibcContext,
+): [Required<EsLibcOptions>, Required<EsLibcContext>] {
   options = options ?? {};
   ctx = ctx ?? {};
   ctx.cwd = ctx.cwd ?? process.cwd();
   ctx.projectRoot = ctx.projectRoot ?? getPackageRoot(ctx.cwd);
   ctx.packageInfo =
     ctx.packageInfo ?? json5.parse(fs.readFileSync(path.resolve(ctx.projectRoot!, 'package.json')).toString())!;
-  options.formats = options.formats ?? ctx.packageInfo?.libbuilder?.formats ?? ['cjs', 'esm'];
-  options.entry = options.entry ?? ctx.packageInfo.libbuilder?.entry ?? 'src/index.ts';
-  options.esbuild = { ...ctx.packageInfo?.libbuilder?.esbuild, ...options.esbuild };
+  options.formats = options.formats ?? ctx.packageInfo?.eslibc?.formats ?? ['cjs', 'esm'];
+  options.entry = options.entry ?? ctx.packageInfo.eslibc?.entry ?? 'src/index.ts';
+  options.esbuild = { ...ctx.packageInfo?.eslibc?.esbuild, ...options.esbuild };
   options.esbuild.tsconfig =
-    options.esbuild.tsconfig ?? ctx.packageInfo?.libbuilder?.esbuild?.tsconfig ?? findTsConfigFile(ctx.cwd);
+    options.esbuild.tsconfig ?? ctx.packageInfo?.eslibc?.esbuild?.tsconfig ?? findTsConfigFile(ctx.cwd);
   ctx.tsCompilerOptions = ctx.tsCompilerOptions ?? {
     ...getDefaultCompilerOptions(),
     ...getCompilerOptionsFromConfigFilePath(options.esbuild.tsconfig),
@@ -62,10 +62,10 @@ export function normalizeOptionsAndContext(
       [],
     );
   options.esbuild.sourcemap = options.esbuild.sourcemap ?? !!ctx.tsCompilerOptions.sourceMap;
-  return [options, ctx] as [Required<LibBuilderOptions>, Required<LibBuilderContext>];
+  return [options, ctx] as [Required<EsLibcOptions>, Required<EsLibcContext>];
 }
 
-export function getOutputFromContext(ctx: LibBuilderContext) {
+export function getOutputFromContext(ctx: EsLibcContext) {
   if (!ctx.tsCompilerOptions?.outDir) {
     throw new Error('could not determine the output directory, you should set outDir in tsconfig.json.');
   }
@@ -75,7 +75,7 @@ export function getOutputFromContext(ctx: LibBuilderContext) {
   return path.resolve(ctx.projectRoot, ctx.tsCompilerOptions.outDir);
 }
 
-const context = '[libbuilder]';
+const context = '[eslibc]';
 
 export const logger = {
   success(...args: any[]): void {

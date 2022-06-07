@@ -1,12 +1,12 @@
 import path from 'path';
 import { program } from 'commander';
 import { build, clean, dts, watch } from '.';
-import { LibBuilderOptions } from './utils';
+import { EsLibcOptions } from './utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const packageInfo = require('../package.json');
 
-program.name('libbuilder').description(packageInfo.description).version(packageInfo.version);
+program.name(packageInfo.name).description(packageInfo.description).version(packageInfo.version);
 
 program
   .command('build')
@@ -15,7 +15,7 @@ program
   .option('-f, --formats [formats...]', 'output formats, supports cjs, esm, iife.')
   .option('-p, --project [project]', 'same as tsc --project option')
   .action((entry: string | undefined, options: { formats?: string[]; project?: string }) => {
-    const buildOptions: LibBuilderOptions = { esbuild: {} };
+    const buildOptions: EsLibcOptions = { esbuild: {} };
     if (entry) {
       buildOptions.entry = entry;
     }
@@ -35,7 +35,7 @@ program
   .option('-f, --formats [string...]', 'output formats, supports cjs and esm')
   .option('-p, --project [project]', 'same as tsc --project option')
   .action((entry: string | undefined, options: { formats?: string[]; project?: string }) => {
-    const buildOptions: LibBuilderOptions = { esbuild: {} };
+    const buildOptions: EsLibcOptions = { esbuild: {} };
     if (entry) {
       buildOptions.entry = entry;
     }
@@ -53,7 +53,7 @@ program
   .description('generate declaration file.')
   .option('-p, --project [project]', 'same as tsc --project option')
   .action((options: { project?: string }) => {
-    const buildOptions: LibBuilderOptions = { esbuild: {} };
+    const buildOptions: EsLibcOptions = { esbuild: {} };
     if (options.project) {
       buildOptions.esbuild!.tsconfig = path.resolve(process.cwd(), options.project);
     }
@@ -65,7 +65,7 @@ program
   .description('clear the output directory and  temporary directory.')
   .option('-p, --project [project]', 'same as tsc --project option')
   .action((options: { project?: string }) => {
-    const buildOptions: LibBuilderOptions = { esbuild: {} };
+    const buildOptions: EsLibcOptions = { esbuild: {} };
     if (options.project) {
       buildOptions.esbuild!.tsconfig = path.resolve(process.cwd(), options.project);
     }

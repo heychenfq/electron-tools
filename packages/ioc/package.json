@@ -9,9 +9,9 @@
     "dist"
   ],
   "scripts": {
-    "clean": "libbuilder clean",
-    "dev": "libbuilder dev",
-    "build": "libbuilder clean && libbuilder build"
+    "clean": "eslibc clean",
+    "dev": "eslibc dev",
+    "build": "eslibc clean && eslibc build"
   },
   "author": "heychenfq <heychenfq@foxmail.com>",
   "license": "MIT",
@@ -20,6 +20,6 @@
     "tslib": "^2.4.0"
   },
   "devDependencies": {
-    "@electron-tools/libbuilder": "workspace:*"
+    "eslibc": "workspace:*"
   }
 }
