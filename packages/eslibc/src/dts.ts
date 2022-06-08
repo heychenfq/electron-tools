@@ -38,7 +38,7 @@ async function generateDts(options: Required<EsLibcOptions>, ctx: Required<EsLib
   const tscPromise = new CustomizePromise();
   tscProcess.on('exit', (code) => {
     if (code && code !== 0) {
-      throw new Error(`Compile sources exit with error, error code: ${code}`);
+      tscPromise.reject(new Error(`Compile sources exit with error, error code: ${code}`));
     } else {
       tscPromise.resolve();
     }
