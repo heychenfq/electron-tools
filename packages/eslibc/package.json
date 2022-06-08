@@ -1,6 +1,6 @@
 {
   "name": "eslibc",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "build library written with javascript or typescript.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
