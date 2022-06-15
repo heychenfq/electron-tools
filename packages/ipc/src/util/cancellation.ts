@@ -1,30 +1,30 @@
-import { CustomizePromise } from './promise';
+import { CustomizePromise } from './customize-promise';
 
 export interface Cancellable {
   cancel(reason?: string): void;
 }
+
+export type CancellablePromise<T = any> = Promise<T> & Cancellable;
 
 interface CancelError extends Error {
   $isCancelError: true;
 }
 
 export class Cancellation implements Cancellable {
-  #onCancel: (reason: string) => void;
-  #cancelled: boolean = false;
+  cancelled: boolean = false;
 
-  constructor(onCancel: (reason: string) => void) {
-    this.#onCancel = onCancel;
-  }
+  constructor(private readonly onCancel: (error: CancelError) => void) {}
 
-  static fromPromise<T>(promise: Promise<T>): Promise<T> & Cancellable {
+  static fromPromise<T>(promise: Promise<T>, onCancel?: (error: CancelError) => void): CancellablePromise<T> {
     const customizePromise = new CustomizePromise<T>();
-    const cancellablePromise = customizePromise.promise as Promise<T> & Cancellable;
-    const cancellation = new Cancellation((reason) => {
-      customizePromise.reject(Cancellation.createCancelError(reason));
+    const cancellablePromise = customizePromise.promise as CancellablePromise<T>;
+    const cancellation = new Cancellation((error) => {
+      if (!customizePromise.isSettled) {
+        onCancel?.(error);
+        customizePromise.reject(error);
+      }
     });
-    cancellablePromise.cancel = (reason?: string) => {
-      cancellation.cancel(reason);
-    };
+    cancellablePromise.cancel = cancellation.cancel.bind(cancellation);
     promise.then(customizePromise.resolve, customizePromise.reject);
     return cancellablePromise;
   }
@@ -39,11 +39,13 @@ export class Cancellation implements Cancellable {
     const stack = error.stack?.split('\n') || [];
     stack.shift();
     error.stack = stack.join('\n');
+    return error;
   }
 
-  cancel(reason?: string): boolean {
-    if (this.#cancelled) return false;
-    this.#onCancel(reason || 'cancelled');
+  cancel(reason: string = 'canceled'): boolean {
+    if (this.cancelled) return false;
+    this.cancelled = true;
+    this.onCancel(Cancellation.createCancelError(reason));
     return true;
   }
 }

@@ -6,20 +6,37 @@
     "electron",
     "ipc"
   ],
-  "main": "dist/index.js",
+  "author": "heychenfq <heychenfq@foxmail.com>",
+  "license": "MIT",
+  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "tsc -w",
-    "build": "tsc"
+    "dev": "eslibc dev",
+    "build": "eslibc clean && eslibc build"
   },
   "dependencies": {
-    "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.5.5",
-    "tslib": "^2.4.0"
+    "rxjs": "^7.5.5"
   },
   "devDependencies": {
-    "typescript": "^4.6.4"
+    "eslibc": "workspace:*",
+    "electron": "^18.3.3",
+    "tslib": "^2.4.0"
   },
-  "author": "heychenfq <heychenfq@foxmail.com>",
-  "license": "MIT"
+  "peerDependencies": {
+    "electron": "*"
+  },
+  "eslibc": {
+    "bundledTypes": [
+      "rxjs"
+    ],
+    "esbuild": {
+      "external": [
+        "tslib",
+        "tslib/*",
+        "electron",
+        "electron/*"
+      ]
+    }
+  }
 }
