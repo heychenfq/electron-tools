@@ -1,8 +1,8 @@
-# Introduction
+# 介绍
 
-Inspired by VSCode IPC implement. A more simple and more powerful way to use Electron [IPC](https://www.electronjs.org/docs/latest/tutorial/ipc). Support Invoke/Acknowledgement mode and event Subscribe/Publish mode between main process and renderer process.
+受到 VSCode 的 IPC 实现启发，基于 Electron [IPC](https://www.electronjs.org/docs/latest/tutorial/ipc) 封装, 一套更简单，更强大的 Electron IPC 通讯方式。支持主进程和渲染进程之间的服务调用以及主进程和渲染进程之间事件发布订阅。
 
-# Installation
+# 安装
 
 ```bash
 # npm
@@ -13,9 +13,9 @@ yarn add @electron-tools/ipc
 pnpm add @electron-tools/ipc
 ```
 
-# Features
+# 特性
 
-- API invoke with Invoke/Acknowledgement mode between main process and renderer process.
+- 主进程/渲染进程之间的服务调用，异步 Promise 返回调用结果。
 
   ```ts
   // renderer process call main process
@@ -25,7 +25,7 @@ pnpm add @electron-tools/ipc
   const [userInfo] = await ipcServer.getChannel('main_window', 'user').invoke('getUserInfo', id);
   ```
 
-- Event listen with Subscribe/Publish mode between main process and render process.
+- 主进程/渲染进程间的事件发布订阅。
 
   ```ts
   // ...
@@ -40,4 +40,12 @@ pnpm add @electron-tools/ipc
   // ...
   ```
 
-# Concept
+# 核心概念
+
+## 请求调用
+
+## 请求响应
+
+## 事件订阅
+
+## 事件发布
