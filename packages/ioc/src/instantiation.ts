@@ -8,14 +8,14 @@ const serviceCtorStore = new Map<ServiceUniqueId, ServiceCtor>();
 export const INSTANTIATION_SERVICE_ID = Symbol.for('instantiationService');
 
 export default class InstantiationService {
-  #serviceStore = new Map<ServiceUniqueId, unknown>();
+  private readonly serviceStore = new Map<ServiceUniqueId, unknown>();
 
   get services() {
-    return this.#serviceStore;
+    return this.serviceStore;
   }
 
   constructor() {
-    this.#serviceStore.set(INSTANTIATION_SERVICE_ID, this);
+    this.serviceStore.set(INSTANTIATION_SERVICE_ID, this);
   }
 
   init() {
@@ -25,17 +25,17 @@ export default class InstantiationService {
   }
 
   registerService(id: ServiceUniqueId, service: any): void {
-    this.#serviceStore.set(id, service);
+    this.serviceStore.set(id, service);
   }
 
   getService<S = any>(id: ServiceUniqueId): S {
     // has created, return exist service
-    if (this.#serviceStore.has(id)) return this.#serviceStore.get(id) as S;
-    return this.#createAndCacheService<S>(id);
+    if (this.serviceStore.has(id)) return this.serviceStore.get(id) as S;
+    return this.createAndCacheService<S>(id);
   }
 
-  #createAndCacheService<S = any>(serviceId: ServiceUniqueId): S {
-    const ServiceCtor = this.#getServiceCtorById(serviceId);
+  createAndCacheService<S = any>(serviceId: ServiceUniqueId): S {
+    const ServiceCtor = this.getServiceCtorById(serviceId);
     if (!ServiceCtor) throw new Error(`[InstantiationService] service ${serviceId} not found!`);
 
     // build graph
@@ -44,12 +44,12 @@ export default class InstantiationService {
     while (stack.length) {
       const node = stack.pop()!;
       graph.lookupOrInsertNode(node);
-      const dependencies: DependenciesValue = (this.#getServiceDependencies(node.ctor) || []).sort(
+      const dependencies: DependenciesValue = (this.getServiceDependencies(node.ctor) || []).sort(
         (a, b) => a.parameterIndex - b.parameterIndex,
       );
       for (const dependency of dependencies) {
-        if (this.#serviceStore.has(dependency.id)) continue;
-        const ServiceCtor = this.#getServiceCtorById(dependency.id);
+        if (this.serviceStore.has(dependency.id)) continue;
+        const ServiceCtor = this.getServiceCtorById(dependency.id);
         const dependencyNode = { ctor: ServiceCtor, serviceId: dependency.id };
         if (!graph.lookup(dependencyNode)) {
           stack.push(dependencyNode);
@@ -68,21 +68,21 @@ export default class InstantiationService {
       }
       for (const root of roots) {
         const { ctor: ServiceCtor, serviceId } = root.data;
-        const dependencies = this.#getServiceDependencies(ServiceCtor) || [];
+        const dependencies = this.getServiceDependencies(ServiceCtor) || [];
         const args = dependencies.map(({ id }) => this.getService(id));
         const service = new ServiceCtor(...args);
-        this.#serviceStore.set(serviceId, service);
+        this.serviceStore.set(serviceId, service);
         graph.removeNode(root.data);
       }
     }
     return this.getService(serviceId);
   }
 
-  #getServiceDependencies(Ctor: ServiceCtor): DependenciesValue {
+  getServiceDependencies(Ctor: ServiceCtor): DependenciesValue {
     return Reflect.getOwnMetadata(dependencyMetadataKey, Ctor);
   }
 
-  #getServiceCtorById(id: ServiceUniqueId): ServiceCtor {
+  getServiceCtorById(id: ServiceUniqueId): ServiceCtor {
     if (!serviceCtorStore.has(id)) {
       throw new Error(`service ${id} not found!`);
     }
