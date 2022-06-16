@@ -3,8 +3,14 @@
 	"include": ["src/**/*"],
   "exclude": ["src/**/*.test.ts", "src/__test__/**/*.ts"],
   "compilerOptions": {
-    "rootDir": "./src",                                  
-    "outDir": "./dist",
-    "declarationDir": "./dist/types"
+    "rootDir": "./src",                              
+    "declarationDir": "./dist/types",
+    "noEmit": true,
+    "types": []
   },
+  "references": [{
+    "path": "./tsconfig.cjs.json",
+  }, {
+    "path": "./tsconfig.esm.json",
+  }]
 }
