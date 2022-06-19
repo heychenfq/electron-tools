@@ -8,20 +8,47 @@
   ],
   "author": "heychenfq <heychenfq@foxmail.com>",
   "license": "MIT",
-  "module": "dist/esm/index.js",
-  "main": "dist/cjs/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/esm/index.js"
+    },
+    "./*": {
+      "require": "./dist/cjs/*.js",
+      "import": "./dist/esm/*.js",
+      "types": "./dist/types/*.d.ts",
+      "default": "./dist/esm/*.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "!dist/*.tsbuildinfo"
+  ],
   "scripts": {
-    "dev": "eslibc dev",
-    "build": "eslibc clean && eslibc build"
+    "clean": "rimraf dist",
+    "dev": "tsc -b -w",
+    "build": "pnpm clean && tsc -b",
+    "test": "jest"
   },
   "dependencies": {
     "rxjs": "^7.5.5"
   },
   "devDependencies": {
-    "eslibc": "workspace:*",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^18.0.0",
     "electron": "^18.3.3",
-    "tslib": "^2.4.0"
+    "jest": "^28.1.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^28.0.2",
+    "ts-node": "^10.8.0",
+    "tslib": "^2.4.0",
+    "typescript": "^4.7.3"
   },
   "peerDependencies": {
     "electron": "*"
