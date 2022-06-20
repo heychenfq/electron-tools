@@ -1,8 +1,12 @@
-# 介绍
+# @electron-tools/ipc
+
+> [English Version](./README.md)
+
+## 介绍
 
 受到 VSCode 的 IPC 实现启发，基于 Electron [IPC](https://www.electronjs.org/docs/latest/tutorial/ipc) 封装, 一套更简单，更强大的 Electron IPC 通讯方式。支持主进程和渲染进程之间的服务调用以及主进程和渲染进程之间事件发布订阅。
 
-# 安装
+## 安装
 
 ```bash
 # npm
@@ -13,7 +17,7 @@ yarn add @electron-tools/ipc
 pnpm add @electron-tools/ipc
 ```
 
-# 特性
+## 特性
 
 - 主进程/渲染进程之间的服务调用，异步 Promise 返回调用结果。
 
@@ -40,12 +44,12 @@ pnpm add @electron-tools/ipc
   // ...
   ```
 
-# 核心概念
+## 核心概念
 
-## 请求调用
+### 请求调用
 
-## 请求响应
+### 请求响应
 
-## 事件订阅
+### 事件订阅
 
-## 事件发布
+### 事件发布

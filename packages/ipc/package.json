@@ -1,6 +1,6 @@
 {
   "name": "@electron-tools/ipc",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "electron ipc toolkit",
   "keywords": [
     "electron",
