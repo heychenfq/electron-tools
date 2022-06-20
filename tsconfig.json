@@ -10,7 +10,6 @@
     "declarationMap": false,                        
     "sourceMap": true,                            
     "removeComments": false,                        
-    "importHelpers": true,                         
     "emitDeclarationOnly": false,
     "importsNotUsedAsValues": "remove",            
     "noEmitOnError": true,                         
