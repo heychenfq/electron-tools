@@ -10,7 +10,7 @@ import {
   Protocol,
   RequestID,
   RequestType,
-  SubscribableWithSubscription,
+  ClientSubscribable,
   SubscribeEventMessage,
   UnsubscribeEventMessage,
 } from './common';
@@ -20,7 +20,7 @@ import { Observable, share, Subscription } from 'rxjs';
 
 export interface ClientChannel {
   invoke<TArgs extends any[] = any[], TReturn = any>(command: string, ...args: TArgs): CancellablePromise<TReturn>;
-  event<TData = any>(event: string): SubscribableWithSubscription<TData>;
+  event<TData = any>(event: string): ClientSubscribable<TData>;
 }
 
 interface ActiveInvokeRequest<TReturn = any> {
@@ -223,6 +223,15 @@ export class ChannelClient<TContext = string> {
         this.activeRequest.delete(requestId);
       };
     }).pipe(share());
-    return subscribable;
+    return {
+      subscribe(cb: (data: TData) => void) {
+        const subscription = subscribable.subscribe(cb);
+        return {
+          unsubscribe() {
+            subscription.unsubscribe();
+          },
+        };
+      },
+    };
   }
 }

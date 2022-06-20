@@ -6,7 +6,7 @@ export interface Subscribable<TData = any> {
   subscribe(receiver: (data: TData) => void): Subscription | void;
 }
 
-export interface SubscribableWithSubscription<TData = any> {
+export interface ClientSubscribable<TData = any> {
   subscribe(receiver: (data: TData) => void): Subscription;
 }
 

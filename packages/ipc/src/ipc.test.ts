@@ -128,9 +128,6 @@ describe('invoke', () => {
     const ipcClient = new IPCClient('client', clientProtocol);
     ipcServer.registerChannel('test', {
       invoke: testService,
-      event() {
-        return of(1, 2, 3);
-      },
     });
     const result2 = ipcClient.getChannel('test').invoke('test_command', 1, 2, 3);
     await expect(result2).resolves.toBe(result);
@@ -144,9 +141,6 @@ describe('invoke', () => {
     const ipcServer = new IPCServer(onDidClientConnect);
     ipcServer.registerChannel('test', {
       invoke: testService,
-      event() {
-        return of(1, 2, 3);
-      },
     });
     const ipcClient = new IPCClient('client', clientProtocol);
     const execution = ipcClient.getChannel('test').invoke('test_command', 1, 2, 3);
@@ -172,9 +166,6 @@ describe('invoke', () => {
     const ipcClient = new IPCClient('client', clientProtocol);
     ipcServer.registerChannel('test', {
       invoke: testService,
-      event() {
-        return of(1, 2, 3);
-      },
     });
     const execution = ipcClient.getChannel('test').invoke('test_command', 1, 2, 3);
     // invoke is a async operation.
@@ -195,9 +186,6 @@ describe('invoke', () => {
     const ipcClient = new IPCClient('client', clientProtocol);
     ipcServer.registerChannel('test', {
       invoke: testService,
-      event() {
-        return of(1, 2, 3);
-      },
     });
     const execution = ipcClient.getChannel('test').invoke('test_command', 1, 2, 3);
     execution.cancel();
@@ -217,9 +205,6 @@ describe('invoke', () => {
     const ipcClient = new IPCClient('client', clientProtocol);
     ipcClient.registerChannel('test', {
       invoke: testService,
-      event() {
-        return of(1, 2, 3);
-      },
     });
     await delay(0);
     const execution = ipcServer.getChannel('client', 'test').invoke('test_command', 1, 2, 3);
@@ -237,7 +222,6 @@ describe('subscribe', () => {
       return subject;
     });
     ipcServer.registerChannel('test', {
-      invoke: noop,
       event: serverEvent,
     });
     const clientEvent = ipcClient.getChannel('test').event('test');
@@ -257,7 +241,6 @@ describe('subscribe', () => {
       return subject;
     });
     ipcServer.registerChannel('test', {
-      invoke: noop,
       event: serverEvent,
     });
     const clientEvent = ipcClient.getChannel('test').event('test');
@@ -284,7 +267,6 @@ describe('subscribe', () => {
       return subject;
     });
     ipcClient.registerChannel('test', {
-      invoke: noop,
       event: clientEvent,
     });
     await delay(0);
@@ -314,7 +296,6 @@ describe('subscribe', () => {
       return subject;
     });
     ipcServer.registerChannel('test', {
-      invoke: noop,
       event: serverEvent,
     });
     const clientEvent = ipcClient.getChannel('test').event('test');
@@ -335,7 +316,6 @@ describe('subscribe', () => {
       return subject;
     });
     ipcServer.registerChannel('test', {
-      invoke: noop,
       event: serverEvent,
     });
     const clientEvent = ipcClient.getChannel('test').event('test');

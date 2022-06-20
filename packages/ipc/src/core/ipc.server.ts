@@ -2,7 +2,7 @@ import { first, merge, Subscription } from 'rxjs';
 import { fromSubscribable } from '../util';
 import { ChannelClient } from './channel.client';
 import { ChannelServer, ServerChannel } from './channel.server';
-import { Protocol, Subscribable, SubscribableWithSubscription } from './common';
+import { Protocol, Subscribable, ClientSubscribable } from './common';
 
 interface Connection<TContext = string> {
   channelServer: ChannelServer<TContext>;
@@ -89,7 +89,7 @@ export class IPCServer<TContext = string> {
 
 interface IPCServerChannel {
   invoke<TArgs extends any[] = any[], TReturn = any>(command: string, ...args: TArgs): Promise<TReturn[]>;
-  event<TData>(event: string): SubscribableWithSubscription<TData>;
+  event<TData>(event: string): ClientSubscribable<TData>;
 }
 
 type ItemType<T> = T extends Array<infer U> ? U : any;

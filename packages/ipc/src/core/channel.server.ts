@@ -10,18 +10,18 @@ import {
   Protocol,
   RequestID,
   RequestType,
-  SubscribableWithSubscription,
   SubscribeEventMessage,
   Subscription,
   UnsubscribeEventMessage,
+  Subscribable,
 } from './common';
 import { Cancellable, Cancellation } from '../util/cancellation';
 import { CustomizePromise } from '../util/customize-promise';
 import { noop, Subscription as RxjsSubscription } from 'rxjs';
 
 export interface ServerChannel<TContext = string> {
-  invoke(ctx: TContext, command: string, ...args: any[]): any;
-  event(ctx: TContext, event: string): SubscribableWithSubscription<any>;
+  invoke?(ctx: TContext, command: string, ...args: any[]): any;
+  event?(ctx: TContext, event: string): Subscribable<any>;
 }
 
 interface ActiveInvokeRequest {
@@ -154,6 +154,9 @@ export class ChannelServer<TContext = string> {
       return;
     }
     try {
+      if (!serverChannel.invoke) {
+        throw new Error(`Channel ${channel} have no any invoke signature.`);
+      }
       const execution = Cancellation.fromPromise(Promise.resolve(serverChannel.invoke(this.ctx!, command, ...args)));
       this.activeRequest.set(id, {
         type: RequestType.INVOKE,
@@ -234,6 +237,9 @@ export class ChannelServer<TContext = string> {
       };
       this.pendingRequest.add(pendingRequest);
       return;
+    }
+    if (!serverChannel.event) {
+      throw new Error(`Channel ${channel} have no any event signature.`);
     }
     const subscription = serverChannel.event(this.ctx!, event).subscribe((data) => {
       this.protocol.send({
