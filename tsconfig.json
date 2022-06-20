@@ -13,7 +13,6 @@
     "importHelpers": true,                         
     "emitDeclarationOnly": false,
     "importsNotUsedAsValues": "remove",            
-    "noEmitHelpers": true,                         
     "noEmitOnError": true,                         
     "allowSyntheticDefaultImports": true,          
     "esModuleInterop": true,
