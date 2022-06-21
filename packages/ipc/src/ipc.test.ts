@@ -1,6 +1,6 @@
 /* eslint-disable quotes */
 import { EventEmitter } from 'events';
-import { fromEvent, map, noop, of, Subject } from 'rxjs';
+import { fromEvent, map, Subject } from 'rxjs';
 import { IPCClient, IPCServer, IPCClientProtocol, Protocol } from '.';
 
 describe('connection', () => {

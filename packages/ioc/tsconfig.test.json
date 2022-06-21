@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/**/*.test.ts", "src/__test__/**/*.ts"],
+  "include": ["src/**/*.ts"],
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",
