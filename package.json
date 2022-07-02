@@ -21,7 +21,7 @@
     "ioc",
     "ipc"
   ],
-  "author": "heychenfq <heychenfq@foxmail.com>",
+  "author": "chenfuqiang",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/heychenfq/electron-tools/issues"

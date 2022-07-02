@@ -1,12 +1,17 @@
 {
   "name": "@electron-tools/ipc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "electron ipc toolkit",
   "keywords": [
     "electron",
     "ipc"
   ],
-  "author": "heychenfq <heychenfq@foxmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heychenfq/electron-tools.git",
+    "directory": "packages/ipc"
+  },
+  "author": "chenfuqiang",
   "license": "MIT",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
